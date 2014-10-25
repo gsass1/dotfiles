@@ -46,3 +46,20 @@ elif ! agent_has_keys; then
 fi
 
 unset env
+
+export EDITOR=vim
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+alias ls='ls --color=auto'
+PS1='[\u@\h \W]\$ '
+
+# Bash completion
+if [ -f /usr/share/bash_completion ]; then
+. /usr/share/bash_completion
+fi
+
+source /usr/share/git/completion/git-prompt.sh
+
+export PS1='\[\033[01;32m\]\u@\h\[\033[01;34m\] \w\[\033[01;33m\]$(__git_ps1)\[\033[01;34m\] \$\[\033[00m\] '
