@@ -1,6 +1,7 @@
 *
 
 !.gitignore
+!.git-prompt.sh
 !.bashrc
 !.vimrc
 !README.md
