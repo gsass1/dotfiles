@@ -1,11 +1,27 @@
+execute pathogen#infect()
+
+python from powerline.vim import setup as powerline_setup
+python powerline_setup()
+python del powerline_setup
+
+set laststatus=2
+
 set expandtab
 set tabstop=4
 set number
 set shiftwidth=4
 
 syntax on
-colorscheme evening
 set guifont=Droid\ Sans\ Mono:h10
+
+let g:solarized_termcolors=256
+
+set t_Co=256
+
+let g:Powerline_symbols = "fancy"
+
+set background=dark
+colorscheme solarized
 
 " No arrow keys
 noremap <Up> <NOP>
@@ -41,4 +57,4 @@ autocmd VimEnter * NERDTree
 autocmd VimEnter * wincmd p
 
 " Add fugitive to statusline
-set statusline+=%{fugitive#statusline()}
+" set statusline+=%{fugitive#statusline()}
