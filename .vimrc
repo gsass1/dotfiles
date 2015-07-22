@@ -4,7 +4,7 @@ set number
 set shiftwidth=4
 
 syntax on
-colorscheme evening
+colorscheme koehler
 set guifont=Droid\ Sans\ Mono:h10
 
 " No arrow keys
@@ -37,8 +37,5 @@ inoremap <C-t>     <Esc>:tabnew<CR>
 cd $HOME
 
 " Autostart NERDTree
-autocmd VimEnter * NERDTree
-autocmd VimEnter * wincmd p
-
-" Add fugitive to statusline
-set statusline+=%{fugitive#statusline()}
+"autocmd VimEnter * NERDTree
+"autocmd VimEnter * wincmd p
