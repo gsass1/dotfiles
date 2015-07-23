@@ -5,5 +5,7 @@
 !.git-prompt.sh
 !.bashrc
 !.profile
+!.tmux.conf
+!.vim
 !.vimrc
 !README.md
