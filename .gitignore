@@ -1,5 +1,9 @@
 *
 
+!bin/
+!bin/*
+!etc/
+!etc/*
 !.git-prompt.sh
 !.gitignore
 !.git-prompt.sh

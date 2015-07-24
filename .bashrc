@@ -73,4 +73,10 @@ source "$HOME/.rvm/scripts/rvm"
 
 export PS1='\[\033[01;32m\]\u@\h\[\033[01;34m\] \w\[\033[01;33m\]$(__git_ps1)\[\033[01;34m\] \$\[\033[00m\] '
 
+export PATH="$PATH:$HOME/.bin"
+
+alias git=hub
+
+source $HOME/etc/hub.bash_completion.sh
+
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
