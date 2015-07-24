@@ -4,6 +4,7 @@
 !bin/*
 !etc/
 !etc/*
+!.gemrc
 !.git-prompt.sh
 !.gitignore
 !.git-prompt.sh
