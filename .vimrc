@@ -20,7 +20,7 @@ set t_Co=256
 
 let g:Powerline_symbols = "fancy"
 
-set background=dark
+set background=light
 colorscheme solarized
 
 " No arrow keys
@@ -53,8 +53,20 @@ inoremap <C-t>     <Esc>:tabnew<CR>
 cd $HOME
 
 " Autostart NERDTree
-autocmd VimEnter * NERDTree
+autocmd VimEnter * NERDTreeToggle
 autocmd VimEnter * wincmd p
+
+silent! nmap <C-p> :NERDTreeToggle<CR>
+silent! map <F3> :NERDTreeFind<CR>
+
+" F2 triggers Rake for Ruby
+autocmd BufNewFile,BufRead *.rb map <F2> :Rake<CR>
+
+" F5 launches python
+autocmd BufNewFile,BufRead *.py map <F5> :!python %:p<CR>
+
+let g:NERDTreeMapActivateNode="<F3>"
+let g:NERDTreeMapPreview="<F4>"
 
 " Add fugitive to statusline
 " set statusline+=%{fugitive#statusline()}
