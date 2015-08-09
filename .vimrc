@@ -14,13 +14,12 @@ set shiftwidth=4
 syntax on
 set guifont=Droid\ Sans\ Mono:h10
 
-let g:solarized_termcolors=256
-
+set term=xterm-256color
 set t_Co=256
 
 let g:Powerline_symbols = "fancy"
 
-set background=light
+set background=dark
 colorscheme solarized
 
 " No arrow keys
