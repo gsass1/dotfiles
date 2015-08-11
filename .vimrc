@@ -69,3 +69,8 @@ let g:NERDTreeMapPreview="<F4>"
 
 " Add fugitive to statusline
 " set statusline+=%{fugitive#statusline()}
+
+set noerrorbells visualbell t_vb=
+if has('autocmd')
+  autocmd GUIEnter * set visualbell t_vb=
+endif
