@@ -12,7 +12,7 @@ set number
 set shiftwidth=4
 
 syntax on
-set guifont=Droid\ Sans\ Mono:h10
+set guifont=Inconsolata-g\ for\ Powerline\ Medium\ 10
 
 set term=xterm-256color
 set t_Co=256
