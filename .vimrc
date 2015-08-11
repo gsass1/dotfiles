@@ -70,7 +70,11 @@ let g:NERDTreeMapPreview="<F4>"
 " Add fugitive to statusline
 " set statusline+=%{fugitive#statusline()}
 
+" Disable beeps
 set noerrorbells visualbell t_vb=
 if has('autocmd')
   autocmd GUIEnter * set visualbell t_vb=
 endif
+
+" CTRL-S for saving
+nnoremap <C-S>     :w<CR>
