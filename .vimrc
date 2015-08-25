@@ -34,6 +34,8 @@ noremap j <NOP>
 noremap k <NOP>
 noremap l <NOP>
 
+noremap = +
+
 " Map window commands to hjkl
 nmap <silent> h :wincmd h<CR>
 nmap <silent> j :wincmd j<CR>
