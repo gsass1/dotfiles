@@ -53,7 +53,7 @@ plugins=(git bundler rake ruby cap catimg dnf pip)
 
 # User configuration
 
-export PATH="$HOME/.rvm/gems/ruby-2.1.4/bin:$HOME/.rvm/gems/ruby-2.1.4@global/bin:$HOME/.rvm/rubies/ruby-2.1.4/bin:/usr/lib64/qt-3.3/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:$HOME/.rvm/bin:$HOME/.local/bin:$HOME/bin:$HOME/.bin:$HOME/.rvm/bin"
+export PATH="$PATH;$HOME/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
@@ -83,4 +83,5 @@ fi
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+source ~/.rvm/scripts/rvm
 source ~/.private
