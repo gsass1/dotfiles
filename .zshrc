@@ -65,7 +65,11 @@ export LANG=en_US.UTF-8
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
 else
-  export EDITOR='mvim'
+  if which mvim > /dev/null 2>&1; then
+    export EDITOR='mvim'
+  else
+    export EDITOR='gvim'
+  fi
 fi
 
 # Compilation flags
