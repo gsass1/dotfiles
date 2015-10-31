@@ -53,7 +53,7 @@ plugins=(git bundler rake ruby cap catimg dnf pip)
 
 # User configuration
 
-export PATH="$PATH;$HOME/bin"
+export PATH="$PATH:$HOME/bin:/sbin:/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
