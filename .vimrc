@@ -12,7 +12,14 @@ set number
 set shiftwidth=4
 
 syntax on
-set guifont=Inconsolata-g\ for\ Powerline\ Medium\ 10
+
+if has("gui_running")
+  if has("gui_macvim")
+    set guifont=Inconsolata-g\ for\ Powerline:h11
+  else
+    set guifont=Inconsolata-g\ for\ Powerline\ Medium\ 10
+  endif
+endif
 
 set term=xterm-256color
 set t_Co=256
