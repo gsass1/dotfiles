@@ -60,9 +60,9 @@ inoremap <C-t>     <Esc>:tabnew<CR>
 " GVIM always starts in System32
 cd $HOME
 
-" Autostart NERDTree
-autocmd VimEnter * NERDTreeToggle
-autocmd VimEnter * wincmd p
+" Autostart NERDTree when using GUI
+autocmd GUIEnter * NERDTreeToggle
+autocmd GUIEnter * wincmd p
 
 silent! nmap <C-p> :NERDTreeToggle<CR>
 silent! map <F3> :NERDTreeFind<CR>
