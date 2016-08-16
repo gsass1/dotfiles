@@ -106,5 +106,7 @@ if has('autocmd')
   autocmd GUIEnter * set visualbell t_vb=
 endif
 
+set smartindent
+
 " CTRL-S for saving
 nnoremap <C-S>     :w<CR>
