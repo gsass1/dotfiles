@@ -12,5 +12,6 @@
 !.profile
 !.tmux.conf
 !.vimrc
+!.ycm_extra_conf.py
 !.zshrc
 !README.md

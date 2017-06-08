@@ -19,6 +19,9 @@ Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-rake'
 
 call vundle#end()
+
+let g:ycm_global_ycm_extra_conf = "~/.ycm_extra_conf.py"
+
 filetype plugin indent on
 
 python from powerline.vim import setup as powerline_setup
