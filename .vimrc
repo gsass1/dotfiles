@@ -17,8 +17,11 @@ Plugin 'tpope/vim-bundler'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-rake'
+Plugin 'scrooloose/nerdcommenter'
 
 call vundle#end()
+
+let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/'  }  }
 
 let g:ycm_global_ycm_extra_conf = "~/.ycm_extra_conf.py"
 
