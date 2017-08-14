@@ -5,12 +5,10 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'Valloric/YouCompleteMe'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'rust-lang/rust.vim'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'kchmck/vim-coffee-script'
-Plugin 'rdnetto/YCM-Generator'
 Plugin 'scrooloose/nerdtree'
 Plugin 'tikhomirov/vim-glsl'
 Plugin 'tpope/vim-bundler'
@@ -19,12 +17,18 @@ Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-rake'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'chase/vim-ansible-yaml'
+Plugin 'morhetz/gruvbox'
+
+" Getting these to work on Windows is a pain in the ass
+if !has("win32")
+  Plugin 'Valloric/YouCompleteMe'
+  Plugin 'rdnetto/YCM-Generator'
+  let g:ycm_global_ycm_extra_conf = "~/.ycm_extra_conf.py"
+endif
 
 call vundle#end()
 
 let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/'  }  }
-
-let g:ycm_global_ycm_extra_conf = "~/.ycm_extra_conf.py"
 
 filetype plugin indent on
 
@@ -32,50 +36,36 @@ python from powerline.vim import setup as powerline_setup
 python powerline_setup()
 python del powerline_setup
 
-set laststatus=2
+let g:Powerline_symbols = "fancy"
 
-set expandtab
-set tabstop=4
+set laststatus=2
 set number
-set shiftwidth=4
 
 syntax on
 
 if has("gui_running")
   if has("gui_macvim")
-    set guifont=Inconsolata-g\ for\ Powerline:h11
+    set guifont=Inconsolata-g\ for\ Powerline:h10
+  elseif has("win32")
+    set guifont=Inconsolata\:h10\:cANSI\:qDRAFT
   else
     set guifont=Inconsolata-g\ for\ Powerline\ Medium\ 10
   endif
 endif
 
-set term=xterm-256color
+set backspace=indent,eol,start
+
+if !has("gui_running")
+  set term=xterm-256color
+endif
+
 set t_Co=256
 
-let g:Powerline_symbols = "fancy"
+colorscheme gruvbox
 
-set background=dark
-colorscheme solarized
-
-" No arrow keys
-noremap <Up> <NOP>
-noremap <Down> <NOP>
-noremap <Left> <NOP>
-noremap <Right> <NOP>
-
-" No hjkl
-noremap h <NOP>
-noremap j <NOP>
-noremap k <NOP>
-noremap l <NOP>
-
+" Swap these as I find it easier like this
 noremap = +
-
-" Map window commands to hjkl
-nmap <silent> h :wincmd h<CR>
-nmap <silent> j :wincmd j<CR>
-nmap <silent> k :wincmd k<CR>
-nmap <silent> l :wincmd l<CR>
+noremap + =
 
 " Tab navigation like firefox
 nnoremap <C-S-tab> :tabprevious<CR>
@@ -86,26 +76,25 @@ inoremap <C-tab>   <Esc>:tabnext<CR>i
 inoremap <C-t>     <Esc>:tabnew<CR>
 
 " GVIM always starts in System32
-cd $HOME
+if has("win32")
+  autocmd GUIEnter * cd $HOME
+endif
 
 " Autostart NERDTree when using GUI
-autocmd GUIEnter * NERDTreeToggle
+autocmd GUIEnter * silent NERDTreeToggle
 autocmd GUIEnter * wincmd p
 
 silent! nmap <C-p> :NERDTreeToggle<CR>
 silent! map <F3> :NERDTreeFind<CR>
 
-" F2 triggers Rake for Ruby
-autocmd BufNewFile,BufRead *.rb map <F2> :Rake<CR>
-
 " F5 launches python
 autocmd BufNewFile,BufRead *.py map <F5> :!python %:p<CR>
 
+autocmd BufNewFile,BufRead *.c set noexpandtab ts=8 sw=8 ai
+autocmd BufNewFile,BufRead *.cpp set noexpandtab ts=8 sw=8 ai
+
 let g:NERDTreeMapActivateNode="<F3>"
 let g:NERDTreeMapPreview="<F4>"
-
-" Add fugitive to statusline
-" set statusline+=%{fugitive#statusline()}
 
 " Disable beeps
 set noerrorbells visualbell t_vb=
@@ -114,6 +103,7 @@ if has('autocmd')
 endif
 
 set smartindent
+set autoindent
 
 " CTRL-S for saving
 nnoremap <C-S>     :w<CR>
