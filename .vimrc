@@ -19,6 +19,7 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'chase/vim-ansible-yaml'
 Plugin 'morhetz/gruvbox'
 Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'triglav/vim-visual-incremen'
 
 " Getting these to work on Windows is a pain in the ass
 if !has("win32")
@@ -44,7 +45,7 @@ syntax on
 
 if has("gui_running")
   if has("gui_macvim")
-    set guifont=Inconsolata-g\ for\ Powerline:h10
+    set guifont=Inconsolata-g\ for\ Powerline:h11
   elseif has("win32")
     set guifont=Inconsolata\:h10\:cANSI\:qDRAFT
   else
