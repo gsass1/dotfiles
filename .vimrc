@@ -19,7 +19,7 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'chase/vim-ansible-yaml'
 Plugin 'morhetz/gruvbox'
 Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'triglav/vim-visual-incremen'
+Plugin 'triglav/vim-visual-increment'
 
 " Getting these to work on Windows is a pain in the ass
 if !has("win32")
