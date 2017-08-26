@@ -18,6 +18,7 @@ Plugin 'tpope/vim-rake'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'chase/vim-ansible-yaml'
 Plugin 'morhetz/gruvbox'
+Plugin 'ctrlpvim/ctrlp.vim'
 
 " Getting these to work on Windows is a pain in the ass
 if !has("win32")
@@ -27,8 +28,6 @@ if !has("win32")
 endif
 
 call vundle#end()
-
-let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/'  }  }
 
 filetype plugin indent on
 
@@ -56,7 +55,7 @@ endif
 set backspace=indent,eol,start
 
 if !has("gui_running")
-  set term=xterm-256color
+  set term=win32
 endif
 
 set t_Co=256
@@ -80,21 +79,11 @@ if has("win32")
   autocmd GUIEnter * cd $HOME
 endif
 
-" Autostart NERDTree when using GUI
-autocmd GUIEnter * silent NERDTreeToggle
-autocmd GUIEnter * wincmd p
-
-silent! nmap <C-p> :NERDTreeToggle<CR>
-silent! map <F3> :NERDTreeFind<CR>
-
 " F5 launches python
 autocmd BufNewFile,BufRead *.py map <F5> :!python %:p<CR>
 
 autocmd BufNewFile,BufRead *.c set noexpandtab ts=8 sw=8 ai
 autocmd BufNewFile,BufRead *.cpp set noexpandtab ts=8 sw=8 ai
-
-let g:NERDTreeMapActivateNode="<F3>"
-let g:NERDTreeMapPreview="<F4>"
 
 " Disable beeps
 set noerrorbells visualbell t_vb=
@@ -107,3 +96,6 @@ set autoindent
 
 " CTRL-S for saving
 nnoremap <C-S>     :w<CR>
+
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
