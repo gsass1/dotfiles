@@ -44,6 +44,9 @@ set number
 syntax on
 
 if has("gui_running")
+  set guioptions -=m
+  set guioptions -=T
+  set guioptions -=r
   if has("gui_macvim")
     set guifont=Inconsolata-g\ for\ Powerline:h11
   elseif has("win32")
@@ -61,7 +64,7 @@ endif
 
 set t_Co=256
 
-colorscheme gruvbox
+colorscheme murphy
 
 " Swap these as I find it easier like this
 noremap = +
