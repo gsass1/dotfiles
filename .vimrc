@@ -39,7 +39,7 @@ python del powerline_setup
 let g:Powerline_symbols = "fancy"
 
 set laststatus=2
-set number
+set nonu
 
 syntax on
 
@@ -47,10 +47,11 @@ if has("gui_running")
   set guioptions -=m
   set guioptions -=T
   set guioptions -=r
+  set guioptions -=L
   if has("gui_macvim")
     set guifont=Inconsolata-g\ for\ Powerline:h11
   elseif has("win32")
-    set guifont=Inconsolata\:h10\:cANSI\:qDRAFT
+    set guifont=Inconsolata\:h13\:cANSI\:qDRAFT
   else
     set guifont=Inconsolata-g\ for\ Powerline\ Medium\ 10
   endif
@@ -64,7 +65,7 @@ endif
 
 set t_Co=256
 
-colorscheme murphy
+colorscheme gruvbox
 
 " Swap these as I find it easier like this
 noremap = +
