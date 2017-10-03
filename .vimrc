@@ -7,7 +7,6 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'rust-lang/rust.vim'
-Plugin 'jiangmiao/auto-pairs'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'scrooloose/nerdtree'
 Plugin 'tikhomirov/vim-glsl'
@@ -51,7 +50,7 @@ if has("gui_running")
   if has("gui_macvim")
     set guifont=Inconsolata-g\ for\ Powerline:h11
   elseif has("win32")
-    set guifont=Inconsolata\:h13\:cANSI\:qDRAFT
+    set guifont=Inconsolata\:h15\:cANSI\:qDRAFT
   else
     set guifont=Inconsolata-g\ for\ Powerline\ Medium\ 10
   endif
@@ -104,3 +103,30 @@ nnoremap <C-S>     :w<CR>
 
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
+
+xnoremap p "_dP
+
+function! s:insert_gates()
+	let gatename = substitute(toupper(expand("%:t")), "\\.", "_", "g")
+	execute "normal! i#ifndef " . gatename
+	execute "normal! o#define " . gatename . " "
+	execute "normal! Go#endif"
+	normal! O
+endfunction
+autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
+
+set nowrap
+
+vnoremap <Tab> > gv
+vnoremap <S-Tab> < gv
+
+nnoremap <silent><C-Right> :wincmd l<CR>
+nnoremap <silent><C-Left> :wincmd h<CR>
+nnoremap <silent><C-Up> :wincmd k<CR>
+nnoremap <silent><C-Down> :wincmd j<CR>
+inoremap <silent><C-Right> <ESC>:wincmd l<CR>
+inoremap <silent><C-Left> <ESC>:wincmd h<CR>
+inoremap <silent><C-Up> <ESC>:wincmd k<CR>
+inoremap <silent><C-Down> <ESC>:wincmd j<CR>
+
+syn keyword cppType local_persist internal r32 r64 s8 u8 s32 u32 s64 u64 s16 u16
