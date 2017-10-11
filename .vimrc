@@ -65,6 +65,7 @@ endif
 set t_Co=256
 
 colorscheme gruvbox
+set background=dark
 
 " Swap these as I find it easier like this
 noremap = +
@@ -88,6 +89,7 @@ autocmd BufNewFile,BufRead *.py map <F5> :!python %:p<CR>
 
 autocmd BufNewFile,BufRead *.c set noexpandtab ts=8 sw=8 ai
 autocmd BufNewFile,BufRead *.cpp set noexpandtab ts=8 sw=8 ai
+autocmd BufNewFile,BufRead *.coffee set expandtab ts=2 sw=2 ai
 
 " Disable beeps
 set noerrorbells visualbell t_vb=
