@@ -90,6 +90,7 @@ autocmd BufNewFile,BufRead *.py map <F5> :!python %:p<CR>
 autocmd BufNewFile,BufRead *.c set noexpandtab ts=8 sw=8 ai
 autocmd BufNewFile,BufRead *.cpp set noexpandtab ts=8 sw=8 ai
 autocmd BufNewFile,BufRead *.coffee set expandtab ts=2 sw=2 ai
+autocmd BufNewFile,BufRead *.{yml,yaml} set filetype=ansible
 
 " Disable beeps
 set noerrorbells visualbell t_vb=
@@ -119,8 +120,8 @@ autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
 
 set nowrap
 
-vnoremap <Tab> > gv
-vnoremap <S-Tab> < gv
+vnoremap > >gv
+vnoremap < <gv
 
 nnoremap <silent><C-Right> :wincmd l<CR>
 nnoremap <silent><C-Left> :wincmd h<CR>
