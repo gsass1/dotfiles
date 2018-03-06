@@ -52,7 +52,8 @@ if has("gui_running")
   elseif has("win32")
     set guifont=Inconsolata\:h15\:cANSI\:qDRAFT
   else
-    set guifont=Inconsolata-g\ for\ Powerline\ Medium\ 10
+    " set guifont=Inconsolata-g\ for\ Powerline\ Medium\ 10
+    set guifont=Liberation\ Mono\ for\ Powerline\ 11
   endif
 endif
 
@@ -86,10 +87,13 @@ endif
 
 " F5 launches python
 autocmd BufNewFile,BufRead *.py map <F5> :!python %:p<CR>
+autocmd BufNewFile,BufRead *.rb map <F5> :!ruby %:p<CR>
 
 autocmd BufNewFile,BufRead *.c set noexpandtab ts=8 sw=8 ai
 autocmd BufNewFile,BufRead *.cpp set noexpandtab ts=8 sw=8 ai
 autocmd BufNewFile,BufRead *.coffee set expandtab ts=2 sw=2 ai
+autocmd BufNewFile,BufRead *.html set expandtab ts=2 sw=2 ai
+autocmd BufNewFile,BufRead *.rb set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.{yml,yaml} set filetype=ansible
 
 " Disable beeps
@@ -132,4 +136,4 @@ inoremap <silent><C-Left> <ESC>:wincmd h<CR>
 inoremap <silent><C-Up> <ESC>:wincmd k<CR>
 inoremap <silent><C-Down> <ESC>:wincmd j<CR>
 
-syn keyword cppType local_persist internal r32 r64 s8 u8 s32 u32 s64 u64 s16 u16
+command EV :e ~/.vimrc
