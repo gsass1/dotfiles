@@ -60,7 +60,9 @@ endif
 set backspace=indent,eol,start
 
 if !has("gui_running")
-  set term=win32
+  if has("win32")
+    set term=win32
+  endif
 endif
 
 set t_Co=256
