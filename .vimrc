@@ -19,6 +19,7 @@ Plugin 'chase/vim-ansible-yaml'
 Plugin 'morhetz/gruvbox'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'triglav/vim-visual-increment'
+Plugin 'elixir-editors/vim-elixir'
 
 " Getting these to work on Windows is a pain in the ass
 if !has("win32")
@@ -93,6 +94,7 @@ autocmd BufNewFile,BufRead *.rb map <F5> :!ruby %:p<CR>
 
 autocmd BufNewFile,BufRead *.c set noexpandtab ts=8 sw=8 ai
 autocmd BufNewFile,BufRead *.cpp set noexpandtab ts=8 sw=8 ai
+autocmd BufNewFile,BufRead *.{css,scss,sass} set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.coffee set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.html set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.rb set expandtab ts=2 sw=2 ai
