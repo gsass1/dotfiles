@@ -20,6 +20,7 @@ Plugin 'morhetz/gruvbox'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'triglav/vim-visual-increment'
 Plugin 'elixir-editors/vim-elixir'
+Plugin 'chr4/nginx.vim'
 
 " Getting these to work on Windows is a pain in the ass
 if !has("win32")
@@ -97,8 +98,10 @@ autocmd BufNewFile,BufRead *.cpp set noexpandtab ts=8 sw=8 ai
 autocmd BufNewFile,BufRead *.{css,scss,sass} set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.coffee set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.html set expandtab ts=2 sw=2 ai
+autocmd BufNewFile,BufRead *.php set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.rb set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.{yml,yaml} set filetype=ansible
+autocmd BufNewFile,BufRead nginx.conf set filetype=nginx
 
 " Disable beeps
 set noerrorbells visualbell t_vb=
