@@ -21,6 +21,7 @@ Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'triglav/vim-visual-increment'
 Plugin 'elixir-editors/vim-elixir'
 Plugin 'chr4/nginx.vim'
+Plugin 'posva/vim-vue'
 
 " Getting these to work on Windows is a pain in the ass
 if !has("win32")
@@ -101,6 +102,7 @@ autocmd BufNewFile,BufRead *.html set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.php set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.rb set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.{yml,yaml} set filetype=ansible
+autocmd BufNewFile,BufRead *.vue set filetype=vue expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead nginx.conf set filetype=nginx
 
 " Disable beeps
