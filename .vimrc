@@ -19,6 +19,7 @@ Plugin 'chase/vim-ansible-yaml'
 Plugin 'morhetz/gruvbox'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'triglav/vim-visual-increment'
+Plugin 'CreaturePhil/vim-handmade-hero'
 
 " Getting these to work on Windows is a pain in the ass
 if !has("win32")
@@ -50,7 +51,7 @@ if has("gui_running")
   if has("gui_macvim")
     set guifont=Inconsolata-g\ for\ Powerline:h11
   elseif has("win32")
-    set guifont=Inconsolata\:h15\:cANSI\:qDRAFT
+    set guifont=Liberation\ Mono\:h15\:cANSI\:qDRAFT
   else
     set guifont=Inconsolata-g\ for\ Powerline\ Medium\ 10
   endif
@@ -64,8 +65,13 @@ endif
 
 set t_Co=256
 
-colorscheme gruvbox
+colorscheme handmade-hero
 set background=dark
+set fillchars+=vert:\ 
+set lazyredraw
+
+set guiheadroom=0
+set guioptions-=e
 
 " Swap these as I find it easier like this
 noremap = +
@@ -81,7 +87,11 @@ inoremap <C-t>     <Esc>:tabnew<CR>
 
 " GVIM always starts in System32
 if has("win32")
-  autocmd GUIEnter * cd $HOME
+  autocmd GUIEnter * cd \
+
+  if has("gui_running")
+	map <F11> <Esc>:call libcallnr("gvimfullscreen.dll", "ToggleFullScreen", 0)<CR>
+  endif
 endif
 
 " F5 launches python
@@ -90,6 +100,7 @@ autocmd BufNewFile,BufRead *.py map <F5> :!python %:p<CR>
 autocmd BufNewFile,BufRead *.c set noexpandtab ts=8 sw=8 ai
 autocmd BufNewFile,BufRead *.cpp set noexpandtab ts=8 sw=8 ai
 autocmd BufNewFile,BufRead *.coffee set expandtab ts=2 sw=2 ai
+autocmd BufNewFile,BufRead *.html set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.{yml,yaml} set filetype=ansible
 
 " Disable beeps
@@ -132,4 +143,42 @@ inoremap <silent><C-Left> <ESC>:wincmd h<CR>
 inoremap <silent><C-Up> <ESC>:wincmd k<CR>
 inoremap <silent><C-Down> <ESC>:wincmd j<CR>
 
-syn keyword cppType local_persist internal r32 r64 s8 u8 s32 u32 s64 u64 s16 u16
+syn keyword cppType local_persist internal r32 r64 s8 u8 s32 u32 s64 u64 s16 u16 b8 b16 b32 b64
+
+nnoremap <Space> @q
+
+function! s:ExecuteInShell(command)
+	let command = join(map(split(a:command), 'expand(v:val)'))
+	let winnr = bufwinnr('^' . command . '$')
+	silent! execute  winnr < 0 ? 'botright vnew ' . fnameescape(command) : winnr . 'wincmd w'
+	setlocal buftype=nowrite bufhidden=wipe nobuflisted noswapfile nowrap nonu
+	echo 'Execute ' . command . '...'
+	silent! execute 'silent %!'. command
+	silent! execute 'resize '
+	silent! redraw
+	silent! execute 'au BufUnload <buffer> execute bufwinnr(' . bufnr('#') . ') . ''wincmd w'''
+	silent! execute 'nnoremap <silent> <buffer> <LocalLeader>r :call <SID>ExecuteInShell(''' . command . ''')<CR>'
+	echo 'Shell command ' . command . ' executed.'
+endfunction
+command! -complete=shellcmd -nargs=+ Shell call s:ExecuteInShell(<q-args>)
+
+function! s:ExecuteBuildCommand()
+	let shellargs = ''
+	if has("win32")
+		if !empty(glob(expand("%:p:h\\shell.bat")))
+			let shellargs = shellargs . ' && shell'
+		endif
+		if !empty(glob(expand("%:p:h\\build.bat")))
+			let shellargs = shellargs . ' && build'
+		endif
+	else
+		if !empty(glob(expand("%:p:h\\Makefile")))
+			let shellargs = shellargs . ' && make'
+		endif
+	endif
+	silent! execute 'Shell cd %:p:h'.shellargs
+	silent! execute 'windcmp p'
+endfunction
+
+command! -complete=shellcmd -nargs=+ Build call s:ExecuteBuildCommand()
+autocmd BufRead *.{c,cpp,h,cxx,hpp} noremap <F5> :Build()<CR>
