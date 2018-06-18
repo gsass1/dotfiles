@@ -19,6 +19,9 @@ Plugin 'chase/vim-ansible-yaml'
 Plugin 'morhetz/gruvbox'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'triglav/vim-visual-increment'
+Plugin 'elixir-editors/vim-elixir'
+Plugin 'chr4/nginx.vim'
+Plugin 'posva/vim-vue'
 Plugin 'CreaturePhil/vim-handmade-hero'
 
 " Getting these to work on Windows is a pain in the ass
@@ -53,14 +56,17 @@ if has("gui_running")
   elseif has("win32")
     set guifont=Liberation\ Mono\:h15\:cANSI\:qDRAFT
   else
-    set guifont=Inconsolata-g\ for\ Powerline\ Medium\ 10
+    " set guifont=Inconsolata-g\ for\ Powerline\ Medium\ 10
+    set guifont=Liberation\ Mono\ for\ Powerline\ 11
   endif
 endif
 
 set backspace=indent,eol,start
 
 if !has("gui_running")
-  set term=win32
+  if has("win32")
+    set term=win32
+  endif
 endif
 
 set t_Co=256
@@ -96,12 +102,18 @@ endif
 
 " F5 launches python
 autocmd BufNewFile,BufRead *.py map <F5> :!python %:p<CR>
+autocmd BufNewFile,BufRead *.rb map <F5> :!ruby %:p<CR>
 
 autocmd BufNewFile,BufRead *.c set noexpandtab ts=8 sw=8 ai
 autocmd BufNewFile,BufRead *.cpp set noexpandtab ts=8 sw=8 ai
+autocmd BufNewFile,BufRead *.{css,scss,sass} set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.coffee set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.html set expandtab ts=2 sw=2 ai
+autocmd BufNewFile,BufRead *.php set expandtab ts=2 sw=2 ai
+autocmd BufNewFile,BufRead *.rb set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.{yml,yaml} set filetype=ansible
+autocmd BufNewFile,BufRead *.vue set filetype=vue expandtab ts=2 sw=2 ai
+autocmd BufNewFile,BufRead nginx.conf set filetype=nginx
 
 " Disable beeps
 set noerrorbells visualbell t_vb=
@@ -143,8 +155,6 @@ inoremap <silent><C-Left> <ESC>:wincmd h<CR>
 inoremap <silent><C-Up> <ESC>:wincmd k<CR>
 inoremap <silent><C-Down> <ESC>:wincmd j<CR>
 
-syn keyword cppType local_persist internal r32 r64 s8 u8 s32 u32 s64 u64 s16 u16 b8 b16 b32 b64
-
 nnoremap <Space> @q
 
 function! s:ExecuteInShell(command)
@@ -182,3 +192,5 @@ endfunction
 
 command! -complete=shellcmd -nargs=+ Build call s:ExecuteBuildCommand()
 autocmd BufRead *.{c,cpp,h,cxx,hpp} noremap <F5> :Build()<CR>
+
+command EV :e ~/.vimrc
