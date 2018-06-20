@@ -175,22 +175,44 @@ command! -complete=shellcmd -nargs=+ Shell call s:ExecuteInShell(<q-args>)
 function! s:ExecuteBuildCommand()
 	let shellargs = ''
 	if has("win32")
-		if !empty(glob(expand("%:p:h\\shell.bat")))
-			let shellargs = shellargs . ' && shell'
-		endif
 		if !empty(glob(expand("%:p:h\\build.bat")))
 			let shellargs = shellargs . ' && build'
 		endif
 	else
-		if !empty(glob(expand("%:p:h\\Makefile")))
+		if !empty(glob(expand("%:p:h/Makefile")))
 			let shellargs = shellargs . ' && make'
 		endif
 	endif
+	silent! execute 'cd' . expand("%p:h")
 	silent! execute 'Shell cd %:p:h'.shellargs
-	silent! execute 'windcmp p'
+	silent! execute 'set filetype=msvc'
+	silent! execute 'wincmd p'
 endfunction
 
 command! -complete=shellcmd -nargs=+ Build call s:ExecuteBuildCommand()
-autocmd BufRead *.{c,cpp,h,cxx,hpp} noremap <F5> :Build()<CR>
+autocmd BufNew,BufRead *.{c,cpp,h,cxx,hpp} noremap <F5> :Build()<CR>
 
-command EV :e ~/.vimrc
+" NOTE: this only works for MSVC, gcc outputs differently
+function! s:GoToError()
+	let line = split(getline("."))
+	let file_and_line = split(line[0], "(")
+	if len(file_and_line) < 2
+		echo "Cannot parse!"
+		return
+	endif
+	let the_file = file_and_line[0]
+	let line_number = split(file_and_line[1], ")")[0]
+	let winnr = bufwinnr(the_file)
+	if winnr > 0
+		exec winnr . 'wincmd w'
+	else
+		exec "vs " .  the_file
+	endif
+	exec  'normal! ' . line_number . 'G'
+endfunction
+
+command! -complete=shellcmd -nargs=+ GoToError call s:GoToError()
+autocmd BufNew,BufRead *.{c,cpp,h,cxx,hpp} nnoremap <Return> :GoToError()<CR>
+
+command! EV :e ~/.vimrc
+noremap <F2> :so ~/.vimrc<CR>
