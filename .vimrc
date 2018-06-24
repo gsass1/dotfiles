@@ -195,6 +195,9 @@ autocmd BufNew,BufRead *.{c,cpp,h,cxx,hpp} noremap <F5> :Build()<CR>
 " NOTE: this only works for MSVC, gcc outputs differently
 function! s:GoToError()
 	let line = split(getline("."))
+	if len(line) < 1
+		return
+	end
 	let file_and_line = split(line[0], "(")
 	if len(file_and_line) < 2
 		echo "Cannot parse!"
@@ -214,5 +217,40 @@ endfunction
 command! -complete=shellcmd -nargs=+ GoToError call s:GoToError()
 autocmd BufNew,BufRead *.{c,cpp,h,cxx,hpp} nnoremap <Return> :GoToError()<CR>
 
+function! s:SwitchHeaderSource()
+	let file_and_ext = split(expand("%:t"), '\.')
+	if len(file_and_ext) < 2
+		echo 'Invalid filename'
+		return
+	end
+	let this_file = file_and_ext[0]
+	let ext = file_and_ext[1]
+	let file_to_open = ''
+	if match(ext, 'cpp') == 0
+		let file_to_open = this_file . '.h'
+	elseif match(ext, 'c') == 0
+		let file_to_open = this_file . '.h'
+	elseif match(ext, 'h') == 0
+		if !empty(glob(this_file.'.cpp'))
+			let file_to_open = this_file . '.cpp'
+		elseif !empty(glob(this_file.'.c'))
+			let file_to_open = this_file . '.c'
+		end
+	else
+		echo 'Not a C/C++ extension: ' . ext
+	endif
+
+	if bufnr(file_to_open) > 0
+		exec 'buffer ' . file_to_open
+	else
+		exec 'e ' . file_to_open
+	endif
+endfunction
+
+command! -complete=shellcmd -nargs=+ SwitchHeaderSource call s:SwitchHeaderSource()
+autocmd BufNew,BufRead *.{c,cpp,h,cxx,hpp} nnoremap <F3> :SwitchHeaderSource()<CR>
+
 command! EV :e ~/.vimrc
 noremap <F2> :so ~/.vimrc<CR>
+
+autocmd BufEnter * silent! lcd %:p:h
