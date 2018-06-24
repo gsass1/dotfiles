@@ -198,13 +198,25 @@ function! s:GoToError()
 	if len(line) < 1
 		return
 	end
-	let file_and_line = split(line[0], "(")
-	if len(file_and_line) < 2
-		echo "Cannot parse!"
-		return
-	endif
-	let the_file = file_and_line[0]
-	let line_number = split(file_and_line[1], ")")[0]
+
+	if has("win32")
+		let file_and_line = split(line[0], "(")
+		if len(file_and_line) < 2
+			echo "Cannot parse!"
+			return
+		endif
+		let the_file = file_and_line[0]
+		let line_number = split(file_and_line[1], ")")[0]
+	else
+		let file_and_line = split(line[0], ":")
+		if len(file_and_line) < 2
+			echo "Cannot parse!"
+			return
+		endif
+
+		let the_file = file_and_line[0]
+		let line_number = file_and_line[1]
+	end
 	let winnr = bufwinnr(the_file)
 	if winnr > 0
 		exec winnr . 'wincmd w'
