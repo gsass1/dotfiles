@@ -23,6 +23,13 @@ Plugin 'elixir-editors/vim-elixir'
 Plugin 'chr4/nginx.vim'
 Plugin 'posva/vim-vue'
 Plugin 'CreaturePhil/vim-handmade-hero'
+Plugin 'tpope/vim-commentary'
+Plugin 'mtth/scratch.vim'
+Plugin 'tpope/vim-sensible'
+Plugin 'vim-scripts/findstr.vim'
+Plugin 'mhinz/vim-startify'
+
+let g:startify_bookmarks = [ '~/.vimrc', '~/vimnotes.txt' ]
 
 " Getting these to work on Windows is a pain in the ass
 if !has("win32")
@@ -43,6 +50,11 @@ let g:Powerline_symbols = "fancy"
 
 set laststatus=2
 set nonu
+
+set incsearch
+set hlsearch
+set smartcase
+set ignorecase
 
 syntax on
 
@@ -104,8 +116,7 @@ endif
 autocmd BufNewFile,BufRead *.py map <F5> :!python %:p<CR>
 autocmd BufNewFile,BufRead *.rb map <F5> :!ruby %:p<CR>
 
-autocmd BufNewFile,BufRead *.c set noexpandtab ts=8 sw=8 ai
-autocmd BufNewFile,BufRead *.cpp set noexpandtab ts=8 sw=8 ai
+autocmd BufNewFile,BufRead *.{c,cpp,h,hpp} set expandtab ts=4 sw=4 ai
 autocmd BufNewFile,BufRead *.{css,scss,sass} set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.coffee set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.html set expandtab ts=2 sw=2 ai
@@ -173,6 +184,7 @@ endfunction
 command! -complete=shellcmd -nargs=+ Shell call s:ExecuteInShell(<q-args>)
 
 function! s:ExecuteBuildCommand()
+	silent! execute 'w'
 	let shellargs = ''
 	if has("win32")
 		if !empty(glob(expand("%:p:h\\build.bat")))
@@ -202,6 +214,9 @@ function! s:GoToError()
 	if has("win32")
 		let file_and_line = split(line[0], "(")
 		if len(file_and_line) < 2
+            let file_and_line = split(line[0], "|")
+        endif
+		if len(file_and_line) < 2
 			echo "Cannot parse!"
 			return
 		endif
@@ -221,7 +236,9 @@ function! s:GoToError()
 	if winnr > 0
 		exec winnr . 'wincmd w'
 	else
-		exec "vs " .  the_file
+		exec 'wincmd p'
+		"exec "vs" .  the_file
+		exec "e " .  the_file
 	endif
 	exec  'normal! ' . line_number . 'G'
 endfunction
@@ -264,5 +281,7 @@ autocmd BufNew,BufRead *.{c,cpp,h,cxx,hpp} nnoremap <F3> :SwitchHeaderSource()<C
 
 command! EV :e ~/.vimrc
 noremap <F2> :so ~/.vimrc<CR>
+
+noremap <F4> :nohlsearch<CR>
 
 autocmd BufEnter * silent! lcd %:p:h
