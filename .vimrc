@@ -28,6 +28,7 @@ Plugin 'mtth/scratch.vim'
 Plugin 'tpope/vim-sensible'
 Plugin 'vim-scripts/findstr.vim'
 Plugin 'mhinz/vim-startify'
+Plugin 'jiangmiao/auto-pairs'
 
 let g:startify_bookmarks = [ '~/.vimrc', '~/vimnotes.txt' ]
 
