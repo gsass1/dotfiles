@@ -29,6 +29,7 @@ Plugin 'tpope/vim-sensible'
 Plugin 'vim-scripts/findstr.vim'
 Plugin 'mhinz/vim-startify'
 Plugin 'jiangmiao/auto-pairs'
+Plugin 'pangloss/vim-javascript'
 
 let g:startify_bookmarks = [ '~/.vimrc', '~/vimnotes.txt' ]
 
@@ -124,7 +125,7 @@ autocmd BufNewFile,BufRead *.html set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.php set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.rb set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.{yml,yaml} set filetype=ansible
-autocmd BufNewFile,BufRead *.vue set filetype=vue expandtab ts=2 sw=2 ai
+autocmd BufNewFile,BufRead *.{vue,js} set filetype=javascript expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead nginx.conf set filetype=nginx
 
 " Disable beeps
