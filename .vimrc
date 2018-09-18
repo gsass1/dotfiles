@@ -33,13 +33,6 @@ Plugin 'pangloss/vim-javascript'
 
 let g:startify_bookmarks = [ '~/.vimrc', '~/vimnotes.txt' ]
 
-" Getting these to work on Windows is a pain in the ass
-if !has("win32")
-  Plugin 'Valloric/YouCompleteMe'
-  Plugin 'rdnetto/YCM-Generator'
-  let g:ycm_global_ycm_extra_conf = "~/.ycm_extra_conf.py"
-endif
-
 call vundle#end()
 
 filetype plugin indent on
@@ -71,21 +64,23 @@ if has("gui_running")
     set guifont=Liberation\ Mono\:h15\:cANSI\:qDRAFT
   else
     " set guifont=Inconsolata-g\ for\ Powerline\ Medium\ 10
-    set guifont=Liberation\ Mono\ for\ Powerline\ 11
+    set guifont=Droid\ Sans\ Mono\ Slashed\ for\ Powerline\ 11
   endif
 endif
 
 set backspace=indent,eol,start
 
+colorscheme handmade-hero
+
 if !has("gui_running")
   if has("win32")
     set term=win32
   endif
+  colorscheme koehler
 endif
 
 set t_Co=256
 
-colorscheme handmade-hero
 set background=dark
 set fillchars+=vert:\ 
 set lazyredraw
@@ -146,11 +141,11 @@ let g:ctrlp_cmd = 'CtrlP'
 xnoremap p "_dP
 
 function! s:insert_gates()
-	let gatename = substitute(toupper(expand("%:t")), "\\.", "_", "g")
-	execute "normal! i#ifndef " . gatename
-	execute "normal! o#define " . gatename . " "
-	execute "normal! Go#endif"
-	normal! O
+  let gatename = substitute(toupper(expand("%:t")), "\\.", "_", "g")
+  execute "normal! i#ifndef " . gatename
+  execute "normal! o#define " . gatename . " "
+  execute "normal! Go#endif"
+  normal! O
 endfunction
 autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
 
@@ -171,17 +166,17 @@ inoremap <silent><C-Down> <ESC>:wincmd j<CR>
 nnoremap <Space> @q
 
 function! s:ExecuteInShell(command)
-	let command = join(map(split(a:command), 'expand(v:val)'))
-	let winnr = bufwinnr('^' . command . '$')
-	silent! execute  winnr < 0 ? 'botright vnew ' . fnameescape(command) : winnr . 'wincmd w'
-	setlocal buftype=nowrite bufhidden=wipe nobuflisted noswapfile nowrap nonu
-	echo 'Execute ' . command . '...'
-	silent! execute 'silent %!'. command
-	silent! execute 'resize '
-	silent! redraw
-	silent! execute 'au BufUnload <buffer> execute bufwinnr(' . bufnr('#') . ') . ''wincmd w'''
-	silent! execute 'nnoremap <silent> <buffer> <LocalLeader>r :call <SID>ExecuteInShell(''' . command . ''')<CR>'
-	echo 'Shell command ' . command . ' executed.'
+  let command = join(map(split(a:command), 'expand(v:val)'))
+  let winnr = bufwinnr('^' . command . '$')
+  silent! execute  winnr < 0 ? 'botright vnew ' . fnameescape(command) : winnr . 'wincmd w'
+  setlocal buftype=nowrite bufhidden=wipe nobuflisted noswapfile nowrap nonu
+  echo 'Execute ' . command . '...'
+  silent! execute 'silent %!'. command
+  silent! execute 'resize '
+  silent! redraw
+  silent! execute 'au BufUnload <buffer> execute bufwinnr(' . bufnr('#') . ') . ''wincmd w'''
+  silent! execute 'nnoremap <silent> <buffer> <LocalLeader>r :call <SID>ExecuteInShell(''' . command . ''')<CR>'
+  echo 'Shell command ' . command . ' executed.'
 endfunction
 command! -complete=shellcmd -nargs=+ Shell call s:ExecuteInShell(<q-args>)
 
@@ -208,74 +203,74 @@ autocmd BufNew,BufRead *.{c,cpp,h,cxx,hpp} noremap <F5> :Build()<CR>
 
 " NOTE: this only works for MSVC, gcc outputs differently
 function! s:GoToError()
-	let line = split(getline("."))
-	if len(line) < 1
-		return
-	end
+  let line = split(getline("."))
+  if len(line) < 1
+    return
+  end
 
-	if has("win32")
-		let file_and_line = split(line[0], "(")
-		if len(file_and_line) < 2
-            let file_and_line = split(line[0], "|")
-        endif
-		if len(file_and_line) < 2
-			echo "Cannot parse!"
-			return
-		endif
-		let the_file = file_and_line[0]
-		let line_number = split(file_and_line[1], ")")[0]
-	else
-		let file_and_line = split(line[0], ":")
-		if len(file_and_line) < 2
-			echo "Cannot parse!"
-			return
-		endif
+  if has("win32")
+    let file_and_line = split(line[0], "(")
+    if len(file_and_line) < 2
+      let file_and_line = split(line[0], "|")
+    endif
+    if len(file_and_line) < 2
+      echo "Cannot parse!"
+      return
+    endif
+    let the_file = file_and_line[0]
+    let line_number = split(file_and_line[1], ")")[0]
+  else
+    let file_and_line = split(line[0], ":")
+    if len(file_and_line) < 2
+      echo "Cannot parse!"
+      return
+    endif
 
-		let the_file = file_and_line[0]
-		let line_number = file_and_line[1]
-	end
-	let winnr = bufwinnr(the_file)
-	if winnr > 0
-		exec winnr . 'wincmd w'
-	else
-		exec 'wincmd p'
-		"exec "vs" .  the_file
-		exec "e " .  the_file
-	endif
-	exec  'normal! ' . line_number . 'G'
+    let the_file = file_and_line[0]
+    let line_number = file_and_line[1]
+  end
+  let winnr = bufwinnr(the_file)
+  if winnr > 0
+    exec winnr . 'wincmd w'
+  else
+    exec 'wincmd p'
+    "exec "vs" .  the_file
+    exec "e " .  the_file
+  endif
+  exec  'normal! ' . line_number . 'G'
 endfunction
 
 command! -complete=shellcmd -nargs=+ GoToError call s:GoToError()
 autocmd BufNew,BufRead *.{c,cpp,h,cxx,hpp} nnoremap <Return> :GoToError()<CR>
 
 function! s:SwitchHeaderSource()
-	let file_and_ext = split(expand("%:t"), '\.')
-	if len(file_and_ext) < 2
-		echo 'Invalid filename'
-		return
-	end
-	let this_file = file_and_ext[0]
-	let ext = file_and_ext[1]
-	let file_to_open = ''
-	if match(ext, 'cpp') == 0
-		let file_to_open = this_file . '.h'
-	elseif match(ext, 'c') == 0
-		let file_to_open = this_file . '.h'
-	elseif match(ext, 'h') == 0
-		if !empty(glob(this_file.'.cpp'))
-			let file_to_open = this_file . '.cpp'
-		elseif !empty(glob(this_file.'.c'))
-			let file_to_open = this_file . '.c'
-		end
-	else
-		echo 'Not a C/C++ extension: ' . ext
-	endif
+  let file_and_ext = split(expand("%:t"), '\.')
+  if len(file_and_ext) < 2
+    echo 'Invalid filename'
+    return
+  end
+  let this_file = file_and_ext[0]
+  let ext = file_and_ext[1]
+  let file_to_open = ''
+  if match(ext, 'cpp') == 0
+    let file_to_open = this_file . '.h'
+  elseif match(ext, 'c') == 0
+    let file_to_open = this_file . '.h'
+  elseif match(ext, 'h') == 0
+    if !empty(glob(this_file.'.cpp'))
+      let file_to_open = this_file . '.cpp'
+    elseif !empty(glob(this_file.'.c'))
+      let file_to_open = this_file . '.c'
+    end
+  else
+    echo 'Not a C/C++ extension: ' . ext
+  endif
 
-	if bufnr(file_to_open) > 0
-		exec 'buffer ' . file_to_open
-	else
-		exec 'e ' . file_to_open
-	endif
+  if bufnr(file_to_open) > 0
+    exec 'buffer ' . file_to_open
+  else
+    exec 'e ' . file_to_open
+  endif
 endfunction
 
 command! -complete=shellcmd -nargs=+ SwitchHeaderSource call s:SwitchHeaderSource()
