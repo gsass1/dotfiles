@@ -8,8 +8,8 @@ filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-Plugin 'VundleVim/Vundle.vim'
 Plugin 'CreaturePhil/vim-handmade-hero'
+Plugin 'VundleVim/Vundle.vim'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'alvan/vim-closetag'
 Plugin 'chase/vim-ansible-yaml'
@@ -154,6 +154,8 @@ else
   if has("win32")
     set term=win32
   endif
+
+  colorscheme koehler
 endif
 
 "    `------------------------------------`
@@ -177,16 +179,16 @@ autocmd BufNewFile,BufRead nginx.conf set filetype=nginx
 "    |    commands and custom extensions  |
 "    `------------------------------------`
 
-" insert_gates: when creating a file called name.h automatically add include
+" InsertGates: when creating a file called name.h automatically add include
 " guard
-function! s:insert_gates()
-	let gatename = substitute(toupper(expand("%:t")), "\\.", "_", "g")
-	execute "normal! i#ifndef " . gatename
-	execute "normal! o#define " . gatename . " "
-	execute "normal! Go#endif"
-	normal! O
+function! s:InsertGates()
+  let gatename = substitute(toupper(expand("%:t")), "\\.", "_", "g")
+  execute "normal! i#ifndef " . gatename
+  execute "normal! o#define " . gatename . " "
+  execute "normal! Go#endif"
+  normal! O
 endfunction
-autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
+autocmd BufNewFile *.{h,hpp} call <SID>InsertGates()
 
 " ExecuteInShell: execute a given command and redirect its output in a new buffer
 "
@@ -194,38 +196,38 @@ autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
 " be annoying but for my use case it's acceptable. might wanna try using
 " neovim's terminal feature in the future
 function! s:ExecuteInShell(command)
-	let command = join(map(split(a:command), 'expand(v:val)'))
-	let winnr = bufwinnr('^' . command . '$')
-	silent! execute  winnr < 0 ? 'botright vnew ' . fnameescape(command) : winnr . 'wincmd w'
-	setlocal buftype=nowrite bufhidden=wipe nobuflisted noswapfile nowrap nonu
-	echo 'Execute ' . command . '...'
-	silent! execute 'silent %!'. command
-	silent! execute 'resize '
-	silent! redraw
-	silent! execute 'au BufUnload <buffer> execute bufwinnr(' . bufnr('#') . ') . ''wincmd w'''
-	silent! execute 'nnoremap <silent> <buffer> <LocalLeader>r :call <SID>ExecuteInShell(''' . command . ''')<CR>'
-	echo 'Shell command ' . command . ' executed.'
+  let command = join(map(split(a:command), 'expand(v:val)'))
+  let winnr = bufwinnr('^' . command . '$')
+  silent! execute  winnr < 0 ? 'botright vnew ' . fnameescape(command) : winnr . 'wincmd w'
+  setlocal buftype=nowrite bufhidden=wipe nobuflisted noswapfile nowrap nonu
+  echo 'Execute ' . command . '...'
+  silent! execute 'silent %!'. command
+  silent! execute 'resize '
+  silent! redraw
+  silent! execute 'au BufUnload <buffer> execute bufwinnr(' . bufnr('#') . ') . ''wincmd w'''
+  silent! execute 'nnoremap <silent> <buffer> <LocalLeader>r :call <SID>ExecuteInShell(''' . command . ''')<CR>'
+  echo 'Shell command ' . command . ' executed.'
 endfunction
 command! -complete=shellcmd -nargs=+ Shell call s:ExecuteInShell(<q-args>)
 
 " ExecuteBuildCommand: execute a build.bat or Makefile in the current
 " directory using ExecuteInShell
 function! s:ExecuteBuildCommand()
-	silent! execute 'w'
-	let shellargs = ''
-	if has("win32")
-		if !empty(glob(expand("%:p:h\\build.bat")))
-			let shellargs = shellargs . ' && build'
-		endif
-	else
-		if !empty(glob(expand("%:p:h/Makefile")))
-			let shellargs = shellargs . ' && make'
-		endif
-	endif
-	silent! execute 'cd' . expand("%p:h")
-	silent! execute 'Shell cd %:p:h'.shellargs
-	silent! execute 'set filetype=msvc'
-	silent! execute 'wincmd p'
+  silent! execute 'w'
+  let shellargs = ''
+  if has("win32")
+    if !empty(glob(expand("%:p:h\\build.bat")))
+      let shellargs = shellargs . ' && build'
+    endif
+  else
+    if !empty(glob(expand("%:p:h/Makefile")))
+      let shellargs = shellargs . ' && make'
+    endif
+  endif
+  silent! execute 'cd' . expand("%p:h")
+  silent! execute 'Shell cd %:p:h'.shellargs
+  silent! execute 'set filetype=msvc'
+  silent! execute 'wincmd p'
 endfunction
 command! -complete=shellcmd -nargs=+ Build call s:ExecuteBuildCommand()
 
@@ -238,75 +240,76 @@ autocmd BufNew,BufRead *.{c,cpp,h,cxx,hpp} noremap <F5> :Build()<CR>
 " example:
 "   c:\dev\ars\ars.cpp(62): error C2065: 'xxx': undeclared identifier
 "
-" NOTE: this only works for MSVC, gcc outputs differently
+" NOTE: works for MSVC and GCC
 function! s:GoToError()
-	let line = split(getline("."))
-	if len(line) < 1
-		return
-	end
+  let line = split(getline("."))
+  if len(line) < 1
+    return
+  end
 
-	if has("win32")
-		let file_and_line = split(line[0], "(")
-		if len(file_and_line) < 2
-            let file_and_line = split(line[0], "|")
-        endif
-		if len(file_and_line) < 2
-			echo "Cannot parse!"
-			return
-		endif
-		let the_file = file_and_line[0]
-		let line_number = split(file_and_line[1], ")")[0]
-	else
-		let file_and_line = split(line[0], ":")
-		if len(file_and_line) < 2
-			echo "Cannot parse!"
-			return
-		endif
+  if has("win32")
+    let file_and_line = split(line[0], "(")
+    if len(file_and_line) < 2
+      let file_and_line = split(line[0], "|")
+    endif
+    if len(file_and_line) < 2
+      echo "Cannot parse!"
+      return
+    endif
+    let the_file = file_and_line[0]
+    let line_number = split(file_and_line[1], ")")[0]
+  else
+    let file_and_line = split(line[0], ":")
+    if len(file_and_line) < 2
+      echo "Cannot parse!"
+      return
+    endif
 
-		let the_file = file_and_line[0]
-		let line_number = file_and_line[1]
-	end
-	let winnr = bufwinnr(the_file)
-	if winnr > 0
-		exec winnr . 'wincmd w'
-	else
-		exec 'wincmd p'
-		exec "e " .  the_file
-	endif
-	exec  'normal! ' . line_number . 'G'
+    let the_file = file_and_line[0]
+    let line_number = file_and_line[1]
+  end
+  let winnr = bufwinnr(the_file)
+  if winnr > 0
+    exec winnr . 'wincmd w'
+  else
+    exec 'wincmd p'
+    exec "e " .  the_file
+  endif
+  exec  'normal! ' . line_number . 'G'
 endfunction
+
 command! -complete=shellcmd -nargs=+ GoToError call s:GoToError()
 autocmd BufNew,BufRead *.{c,cpp,h,cxx,hpp} nnoremap <Return> :GoToError()<CR>
 
 " SwitchHeaderSource: switch between file.cpp and file.h
 function! s:SwitchHeaderSource()
-	let file_and_ext = split(expand("%:t"), '\.')
-	if len(file_and_ext) < 2
-		echo 'Invalid filename'
-		return
-	end
-	let this_file = file_and_ext[0]
-	let ext = file_and_ext[1]
-	let file_to_open = ''
-	if match(ext, 'cpp') == 0
-		let file_to_open = this_file . '.h'
-	elseif match(ext, 'c') == 0
-		let file_to_open = this_file . '.h'
-	elseif match(ext, 'h') == 0
-		if !empty(glob(this_file.'.cpp'))
-			let file_to_open = this_file . '.cpp'
-		elseif !empty(glob(this_file.'.c'))
-			let file_to_open = this_file . '.c'
-		end
-	else
-		echo 'Not a C/C++ extension: ' . ext
-	endif
+  let file_and_ext = split(expand("%:t"), '\.')
+  if len(file_and_ext) < 2
+    echo 'Invalid filename'
+    return
+  end
+  let this_file = file_and_ext[0]
+  let ext = file_and_ext[1]
+  let file_to_open = ''
+  if match(ext, 'cpp') == 0
+    let file_to_open = this_file . '.h'
+  elseif match(ext, 'c') == 0
+    let file_to_open = this_file . '.h'
+  elseif match(ext, 'h') == 0
+    if !empty(glob(this_file.'.cpp'))
+      let file_to_open = this_file . '.cpp'
+    elseif !empty(glob(this_file.'.c'))
+      let file_to_open = this_file . '.c'
+    end
+  else
+    echo 'Not a C/C++ extension: ' . ext
+  endif
 
-	if bufnr(file_to_open) > 0
-		exec 'buffer ' . file_to_open
-	else
-		exec 'e ' . file_to_open
-	endif
+  if bufnr(file_to_open) > 0
+    exec 'buffer ' . file_to_open
+  else
+    exec 'e ' . file_to_open
+  endif
 endfunction
 
 command! -complete=shellcmd -nargs=+ SwitchHeaderSource call s:SwitchHeaderSource()
