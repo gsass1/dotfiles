@@ -1,3 +1,7 @@
+"    `---------------------`
+"    |       vundle        |
+"    `---------------------`
+
 set nocompatible
 filetype off
 
@@ -5,50 +9,53 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
+Plugin 'CreaturePhil/vim-handmade-hero'
 Plugin 'altercation/vim-colors-solarized'
-Plugin 'rust-lang/rust.vim'
+Plugin 'alvan/vim-closetag'
+Plugin 'chase/vim-ansible-yaml'
+Plugin 'chr4/nginx.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'elixir-editors/vim-elixir'
+Plugin 'jiangmiao/auto-pairs'
 Plugin 'kchmck/vim-coffee-script'
+Plugin 'mhinz/vim-startify'
+Plugin 'morhetz/gruvbox'
+Plugin 'mtth/scratch.vim'
+Plugin 'pangloss/vim-javascript'
+Plugin 'posva/vim-vue'
+Plugin 'rust-lang/rust.vim'
+Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
 Plugin 'tikhomirov/vim-glsl'
 Plugin 'tpope/vim-bundler'
+Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-rake'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'chase/vim-ansible-yaml'
-Plugin 'morhetz/gruvbox'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'triglav/vim-visual-increment'
-Plugin 'elixir-editors/vim-elixir'
-Plugin 'chr4/nginx.vim'
-Plugin 'posva/vim-vue'
-Plugin 'CreaturePhil/vim-handmade-hero'
-Plugin 'tpope/vim-commentary'
-Plugin 'mtth/scratch.vim'
 Plugin 'tpope/vim-sensible'
+Plugin 'triglav/vim-visual-increment'
 Plugin 'vim-scripts/findstr.vim'
-Plugin 'mhinz/vim-startify'
-Plugin 'jiangmiao/auto-pairs'
-Plugin 'pangloss/vim-javascript'
-
-let g:startify_bookmarks = [ '~/.vimrc', '~/vimnotes.txt' ]
-
-" Getting these to work on Windows is a pain in the ass
-if !has("win32")
-  Plugin 'Valloric/YouCompleteMe'
-  Plugin 'rdnetto/YCM-Generator'
-  let g:ycm_global_ycm_extra_conf = "~/.ycm_extra_conf.py"
-endif
 
 call vundle#end()
 
-filetype plugin indent on
+" startify
+let g:startify_bookmarks = [ '~/.vimrc', '~/vimnotes.txt' ]
+
+"    `---------------------`
+"    |      powerline      |
+"    `---------------------`
 
 python from powerline.vim import setup as powerline_setup
 python powerline_setup()
 python del powerline_setup
 
 let g:Powerline_symbols = "fancy"
+
+"    `---------------------`
+"    |  general settings   |
+"    `---------------------`
+
+filetype plugin indent on
 
 set laststatus=2
 set nonu
@@ -58,40 +65,15 @@ set hlsearch
 set smartcase
 set ignorecase
 
-syntax on
+set smartindent
+set autoindent
 
-if has("gui_running")
-  set guioptions -=m
-  set guioptions -=T
-  set guioptions -=r
-  set guioptions -=L
-  if has("gui_macvim")
-    set guifont=Inconsolata-g\ for\ Powerline:h11
-  elseif has("win32")
-    set guifont=Liberation\ Mono\:h15\:cANSI\:qDRAFT
-  else
-    " set guifont=Inconsolata-g\ for\ Powerline\ Medium\ 10
-    set guifont=Liberation\ Mono\ for\ Powerline\ 11
-  endif
-endif
-
-set backspace=indent,eol,start
-
-if !has("gui_running")
-  if has("win32")
-    set term=win32
-  endif
-endif
+set nowrap
 
 set t_Co=256
 
-colorscheme handmade-hero
-set background=dark
-set fillchars+=vert:\ 
-set lazyredraw
-
-set guiheadroom=0
-set guioptions-=e
+" Normal backspace behavior
+set backspace=indent,eol,start
 
 " Swap these as I find it easier like this
 noremap = +
@@ -105,16 +87,79 @@ inoremap <C-S-tab> <Esc>:tabprevious<CR>i
 inoremap <C-tab>   <Esc>:tabnext<CR>i
 inoremap <C-t>     <Esc>:tabnew<CR>
 
-" GVIM always starts in System32
-if has("win32")
-  autocmd GUIEnter * cd \
+" Disable beeps
+set noerrorbells visualbell t_vb=
+if has('autocmd')
+  autocmd GUIEnter * set visualbell t_vb=
+endif
 
-  if has("gui_running")
-	map <F11> <Esc>:call libcallnr("gvimfullscreen.dll", "ToggleFullScreen", 0)<CR>
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+
+" When pasting, don't save overriden content into clip
+xnoremap p "_dP
+
+" Keep selection when indenting
+vnoremap > >gv
+vnoremap < <gv
+
+" I like using the q register for quick macros
+nnoremap <Space> @q
+
+" Can use CTRL+arrow keys for navigating windows
+nnoremap <silent><C-Right> :wincmd l<CR>
+nnoremap <silent><C-Left> :wincmd h<CR>
+nnoremap <silent><C-Up> :wincmd k<CR>
+nnoremap <silent><C-Down> :wincmd j<CR>
+inoremap <silent><C-Right> <ESC>:wincmd l<CR>
+inoremap <silent><C-Left> <ESC>:wincmd h<CR>
+inoremap <silent><C-Up> <ESC>:wincmd k<CR>
+inoremap <silent><C-Down> <ESC>:wincmd j<CR>
+
+"    `---------------------`
+"    |    gui and font     |
+"    `---------------------`
+
+syntax on
+colorscheme handmade-hero
+set background=dark
+set fillchars+=vert:\ 
+set lazyredraw
+
+if has("gui_running")
+  " CTRL-S for saving
+  nnoremap <C-S>     :w<CR>
+
+  set guioptions -=m
+  set guioptions -=T
+  set guioptions -=r
+  set guioptions -=L
+  set guiheadroom=0
+  set guioptions-=e
+
+  if has("gui_macvim")
+    set guifont=Inconsolata-g\ for\ Powerline:h11
+  elseif has("win32")
+    set guifont=Liberation\ Mono\:h14\:cANSI\:qDRAFT
+
+    " GVIM always starts in System32
+    autocmd GUIEnter * cd \
+
+    " Fullscreen plugin
+    map <F11> <Esc>:call libcallnr("gvimfullscreen.dll", "ToggleFullScreen", 0)<CR>
+  else
+    set guifont=Liberation\ Mono\ for\ Powerline\ 11
+  endif
+else
+  if has("win32")
+    set term=win32
   endif
 endif
 
-" F5 launches python
+"    `------------------------------------`
+"    |    language settings + overrides   |
+"    `------------------------------------`
+
 autocmd BufNewFile,BufRead *.py map <F5> :!python %:p<CR>
 autocmd BufNewFile,BufRead *.rb map <F5> :!ruby %:p<CR>
 
@@ -128,23 +173,12 @@ autocmd BufNewFile,BufRead *.{yml,yaml} set filetype=ansible
 autocmd BufNewFile,BufRead *.{vue,js} set filetype=javascript expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead nginx.conf set filetype=nginx
 
-" Disable beeps
-set noerrorbells visualbell t_vb=
-if has('autocmd')
-  autocmd GUIEnter * set visualbell t_vb=
-endif
+"    `------------------------------------`
+"    |    commands and custom extensions  |
+"    `------------------------------------`
 
-set smartindent
-set autoindent
-
-" CTRL-S for saving
-nnoremap <C-S>     :w<CR>
-
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-
-xnoremap p "_dP
-
+" insert_gates: when creating a file called name.h automatically add include
+" guard
 function! s:insert_gates()
 	let gatename = substitute(toupper(expand("%:t")), "\\.", "_", "g")
 	execute "normal! i#ifndef " . gatename
@@ -154,22 +188,11 @@ function! s:insert_gates()
 endfunction
 autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
 
-set nowrap
-
-vnoremap > >gv
-vnoremap < <gv
-
-nnoremap <silent><C-Right> :wincmd l<CR>
-nnoremap <silent><C-Left> :wincmd h<CR>
-nnoremap <silent><C-Up> :wincmd k<CR>
-nnoremap <silent><C-Down> :wincmd j<CR>
-inoremap <silent><C-Right> <ESC>:wincmd l<CR>
-inoremap <silent><C-Left> <ESC>:wincmd h<CR>
-inoremap <silent><C-Up> <ESC>:wincmd k<CR>
-inoremap <silent><C-Down> <ESC>:wincmd j<CR>
-
-nnoremap <Space> @q
-
+" ExecuteInShell: execute a given command and redirect its output in a new buffer
+"
+" TODO: this waits until the command is finished, causing a delay. this might
+" be annoying but for my use case it's acceptable. might wanna try using
+" neovim's terminal feature in the future
 function! s:ExecuteInShell(command)
 	let command = join(map(split(a:command), 'expand(v:val)'))
 	let winnr = bufwinnr('^' . command . '$')
@@ -185,6 +208,8 @@ function! s:ExecuteInShell(command)
 endfunction
 command! -complete=shellcmd -nargs=+ Shell call s:ExecuteInShell(<q-args>)
 
+" ExecuteBuildCommand: execute a build.bat or Makefile in the current
+" directory using ExecuteInShell
 function! s:ExecuteBuildCommand()
 	silent! execute 'w'
 	let shellargs = ''
@@ -202,10 +227,17 @@ function! s:ExecuteBuildCommand()
 	silent! execute 'set filetype=msvc'
 	silent! execute 'wincmd p'
 endfunction
-
 command! -complete=shellcmd -nargs=+ Build call s:ExecuteBuildCommand()
+
+" Map F5 to the build command
 autocmd BufNew,BufRead *.{c,cpp,h,cxx,hpp} noremap <F5> :Build()<CR>
 
+" GoToError: directly jump to the line of code of the error hovered on by the
+" cursor. used in conjunction with ExecuteBuildCommand
+"
+" example:
+"   c:\dev\ars\ars.cpp(62): error C2065: 'xxx': undeclared identifier
+"
 " NOTE: this only works for MSVC, gcc outputs differently
 function! s:GoToError()
 	let line = split(getline("."))
@@ -239,15 +271,14 @@ function! s:GoToError()
 		exec winnr . 'wincmd w'
 	else
 		exec 'wincmd p'
-		"exec "vs" .  the_file
 		exec "e " .  the_file
 	endif
 	exec  'normal! ' . line_number . 'G'
 endfunction
-
 command! -complete=shellcmd -nargs=+ GoToError call s:GoToError()
 autocmd BufNew,BufRead *.{c,cpp,h,cxx,hpp} nnoremap <Return> :GoToError()<CR>
 
+" SwitchHeaderSource: switch between file.cpp and file.h
 function! s:SwitchHeaderSource()
 	let file_and_ext = split(expand("%:t"), '\.')
 	if len(file_and_ext) < 2
@@ -283,7 +314,7 @@ autocmd BufNew,BufRead *.{c,cpp,h,cxx,hpp} nnoremap <F3> :SwitchHeaderSource()<C
 
 command! EV :e ~/.vimrc
 noremap <F2> :so ~/.vimrc<CR>
-
 noremap <F4> :nohlsearch<CR>
 
+" When opening a file, cd to that file's directory
 autocmd BufEnter * silent! lcd %:p:h
