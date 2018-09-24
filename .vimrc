@@ -8,32 +8,63 @@ filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-Plugin 'CreaturePhil/vim-handmade-hero'
+" Vundle
 Plugin 'VundleVim/Vundle.vim'
+
+" Colorschemes
+Plugin 'CreaturePhil/vim-handmade-hero'
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'morhetz/gruvbox'
+
+" Autoclose braces, etc.
+Plugin 'jiangmiao/auto-pairs'
+"
+" Autoclose HTML tags
 Plugin 'alvan/vim-closetag'
+
+" Syntax plugins
 Plugin 'chase/vim-ansible-yaml'
 Plugin 'chr4/nginx.vim'
-Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'elixir-editors/vim-elixir'
-Plugin 'jiangmiao/auto-pairs'
 Plugin 'kchmck/vim-coffee-script'
-Plugin 'mhinz/vim-startify'
-Plugin 'morhetz/gruvbox'
-Plugin 'mtth/scratch.vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'posva/vim-vue'
 Plugin 'rust-lang/rust.vim'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'scrooloose/nerdtree'
 Plugin 'tikhomirov/vim-glsl'
+
+" Helps with navigation
+Plugin 'ctrlpvim/ctrlp.vim'
+
+" Discord Rich presence
+Plugin 'anned20/vimsence'
+
+" Adds a nice startup screen
+Plugin 'mhinz/vim-startify'
+
+" Allows one to use scratch buffers
+Plugin 'mtth/scratch.vim'
+
+" File navigation
+Plugin 'scrooloose/nerdtree'
+
+" Ruby and Rails helpers
 Plugin 'tpope/vim-bundler'
-Plugin 'tpope/vim-commentary'
-Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-rake'
+
+" Autocommenter
+Plugin 'tpope/vim-commentary'
+
+" Git support
+Plugin 'tpope/vim-fugitive'
+
+" "Defaults everyone can agree on"
 Plugin 'tpope/vim-sensible'
+
+" use CTRL+A/X to create increasing sequence of numbers or letters via visual mode
 Plugin 'triglav/vim-visual-increment'
+
+" Windows-only
 Plugin 'vim-scripts/findstr.vim'
 
 call vundle#end()
@@ -140,7 +171,7 @@ if has("gui_running")
   if has("gui_macvim")
     set guifont=Inconsolata-g\ for\ Powerline:h11
   elseif has("win32")
-    set guifont=Liberation\ Mono\:h14\:cANSI\:qDRAFT
+    set guifont=Liberation\ Mono\:h12\:cANSI\:qDRAFT
 
     " GVIM always starts in System32
     autocmd GUIEnter * cd \
