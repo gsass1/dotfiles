@@ -35,9 +35,6 @@ Plugin 'tikhomirov/vim-glsl'
 " Helps with navigation
 Plugin 'ctrlpvim/ctrlp.vim'
 
-" Discord Rich presence
-Plugin 'anned20/vimsence'
-
 " Adds a nice startup screen
 Plugin 'mhinz/vim-startify'
 
