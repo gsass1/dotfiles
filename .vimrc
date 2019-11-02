@@ -178,7 +178,7 @@ if has("gui_running")
     " Fullscreen plugin
     map <F11> <Esc>:call libcallnr("gvimfullscreen.dll", "ToggleFullScreen", 0)<CR>
   else
-    set guifont=Liberation\ Mono\ for\ Powerline\ 14
+    set guifont=Liberation\ Mono\ for\ Powerline\ 11
   endif
 else
   if has("win32")
@@ -202,7 +202,7 @@ autocmd BufNewFile,BufRead *.html set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.php set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.rb set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.{yml,yaml} set filetype=ansible
-autocmd BufNewFile,BufRead *.{vue,js} set filetype=javascript expandtab ts=2 sw=2 ai
+autocmd BufNewFile,BufRead *.{vue,js,jsx} set filetype=javascript expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead nginx.conf set filetype=nginx
 
 "    `------------------------------------`
