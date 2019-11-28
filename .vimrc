@@ -49,6 +49,8 @@ Plugin 'tpope/vim-bundler'
 Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-rake'
 
+Plugin 'fatih/vim-go'
+
 " Autocommenter
 Plugin 'tpope/vim-commentary'
 
@@ -397,4 +399,8 @@ let g:closetag_shortcut = '>'
 "
 let g:closetag_close_shortcut = '<leader>>'
 
-set noesckeys
+" set noesckeys
+
+nnoremap F :GoIfErr<CR>
+nnoremap <F5> :GoBuild<CR>
+
