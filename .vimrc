@@ -1,91 +1,87 @@
-"    `---------------------`
-"    |       vundle        |
-"    `---------------------`
+" +-------------+
+" |             |
+" |   Plugins   |
+" |             |
+" +-------------+
 
 set nocompatible
-filetype off
+" filetype off
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" Vundle
-Plugin 'VundleVim/Vundle.vim'
+call plug#begin('~/.vim/plugged')
 
 " Colorschemes
-Plugin 'CreaturePhil/vim-handmade-hero'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'morhetz/gruvbox'
+Plug 'CreaturePhil/vim-handmade-hero'
+Plug 'altercation/vim-colors-solarized'
+Plug 'morhetz/gruvbox'
 
 " Autoclose braces, etc.
-Plugin 'jiangmiao/auto-pairs'
+Plug 'jiangmiao/auto-pairs'
 "
 " Autoclose HTML tags
-Plugin 'alvan/vim-closetag'
+Plug 'alvan/vim-closetag'
 
 " Syntax plugins
-Plugin 'chase/vim-ansible-yaml'
-Plugin 'chr4/nginx.vim'
-Plugin 'elixir-editors/vim-elixir'
-Plugin 'kchmck/vim-coffee-script'
-Plugin 'pangloss/vim-javascript'
-Plugin 'posva/vim-vue'
-Plugin 'rust-lang/rust.vim'
-Plugin 'tikhomirov/vim-glsl'
-
-" Helps with navigation
-Plugin 'ctrlpvim/ctrlp.vim'
-
-" Adds a nice startup screen
-Plugin 'mhinz/vim-startify'
-
-" Allows one to use scratch buffers
-Plugin 'mtth/scratch.vim'
+Plug 'chase/vim-ansible-yaml'
+Plug 'chr4/nginx.vim'
+Plug 'pangloss/vim-javascript'
+Plug 'posva/vim-vue'
+Plug 'mpickering/hlint-refactor-vim'
 
 " File navigation
-Plugin 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree'
 
 " Ruby and Rails helpers
-Plugin 'tpope/vim-bundler'
-Plugin 'tpope/vim-rails'
-Plugin 'tpope/vim-rake'
+Plug 'tpope/vim-bundler'
+Plug 'tpope/vim-rails'
+Plug 'tpope/vim-rake'
 
-Plugin 'fatih/vim-go'
+Plug 'fatih/vim-go'
 
 " Autocommenter
-Plugin 'tpope/vim-commentary'
+Plug 'tpope/vim-commentary'
 
 " Git support
-Plugin 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 
 " "Defaults everyone can agree on"
-Plugin 'tpope/vim-sensible'
+Plug 'tpope/vim-sensible'
 
 " use CTRL+A/X to create increasing sequence of numbers or letters via visual mode
-Plugin 'triglav/vim-visual-increment'
+Plug 'triglav/vim-visual-increment'
 
 " Windows-only
-Plugin 'vim-scripts/findstr.vim'
+Plug 'vim-scripts/findstr.vim'
 
-Plugin 'maxmellon/vim-jsx-pretty'
+Plug 'maxmellon/vim-jsx-pretty'
 
-call vundle#end()
+Plug 'udalov/kotlin-vim'
 
-" startify
-let g:startify_bookmarks = [ '~/.vimrc', '~/vimnotes.txt' ]
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-"    `---------------------`
-"    |      powerline      |
-"    `---------------------`
+Plug 'junegunn/fzf', { 'do': { -> fzf#install()  } }
+Plug 'junegunn/fzf.vim'
 
-python from powerline.vim import setup as powerline_setup
-python powerline_setup()
-python del powerline_setup
+Plug 'slim-template/vim-slim'
 
-let g:Powerline_symbols = "fancy"
+Plug 'gsass1/ascii.nvim'
 
-"    `---------------------`
-"    |  general settings   |
-"    `---------------------`
+Plug 'andweeb/presence.nvim', { 'branch': 'main' }
+
+call plug#end()
+
+nmap <leader>gd <Plug>(coc-definition)
+nmap <leader>gr <Plug>(coc-references)
+
+nnoremap <C-p> :GFiles<CR>
+
+nmap <leader>gd <Plug>(coc-definition)
+nmap <leader>gr <Plug>(coc-references)
+
+" +-----------------------+
+" |                       |
+" |   General settings    |
+" |                       |
+" +-----------------------+
 
 filetype plugin indent on
 
@@ -130,6 +126,8 @@ let g:ctrlp_cmd = 'CtrlP'
 
 " When pasting, don't save overriden content into clip
 xnoremap p "_dP
+xnoremap P "_dP
+xnoremap d "_d
 
 " Keep selection when indenting
 vnoremap > >gv
@@ -137,6 +135,7 @@ vnoremap < <gv
 
 " I like using the q register for quick macros
 nnoremap <Space> @q
+nnoremap <M-l> @a
 
 " Can use CTRL+arrow keys for navigating windows
 nnoremap <silent><C-Right> :wincmd l<CR>
@@ -148,12 +147,47 @@ inoremap <silent><C-Left> <ESC>:wincmd h<CR>
 inoremap <silent><C-Up> <ESC>:wincmd k<CR>
 inoremap <silent><C-Down> <ESC>:wincmd j<CR>
 
-"    `---------------------`
-"    |    gui and font     |
-"    `---------------------`
+nnoremap y "+y
+vnoremap y "+y
+
+set number
+
+
+" TextEdit might fail if hidden is not set.
+set hidden
+
+" Some servers have issues with backup files, see #649.
+set nobackup
+set nowritebackup
+
+" Give more space for displaying messages.
+set cmdheight=2
+
+" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+" delays and poor user experience.
+set updatetime=300
+
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
+
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+if has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
+
+
+" +-------------------+
+" |                   |
+" |   GUI and Font    |
+" |                   |
+" +-------------------+
 
 syntax on
-colorscheme handmade-hero
+colorscheme gruvbox
 set background=dark
 set fillchars+=vert:\ 
 set lazyredraw
@@ -180,19 +214,21 @@ if has("gui_running")
     " Fullscreen plugin
     map <F11> <Esc>:call libcallnr("gvimfullscreen.dll", "ToggleFullScreen", 0)<CR>
   else
-    set guifont=Liberation\ Mono\ for\ Powerline\ 11
+    set guifont=Liberation\ Mono\ for\ Powerline\ 15
   endif
 else
   if has("win32")
     set term=win32
   endif
 
-  colorscheme koehler
+  "colorscheme koehler
 endif
 
-"    `------------------------------------`
-"    |    language settings + overrides   |
-"    `------------------------------------`
+" +--------------------------------------+
+" |                                      |
+" |   Language Settings and Overrides    |
+" |                                      |
+" +--------------------------------------+
 
 autocmd BufNewFile,BufRead *.py map <F5> :!python %:p<CR>
 autocmd BufNewFile,BufRead *.rb map <F5> :!ruby %:p<CR>
@@ -200,16 +236,28 @@ autocmd BufNewFile,BufRead *.rb map <F5> :!ruby %:p<CR>
 autocmd BufNewFile,BufRead *.{c,cpp,h,hpp} set expandtab ts=4 sw=4 ai
 autocmd BufNewFile,BufRead *.{css,scss,sass} set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.coffee set expandtab ts=2 sw=2 ai
-autocmd BufNewFile,BufRead *.html set expandtab ts=2 sw=2 ai
+autocmd BufNewFile,BufRead *.{html,hbs} set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.php set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.rb set expandtab ts=2 sw=2 ai
 autocmd BufNewFile,BufRead *.{yml,yaml} set filetype=ansible
-autocmd BufNewFile,BufRead *.{vue,js,jsx} set filetype=javascript expandtab ts=2 sw=2 ai
+autocmd BufNewFile,BufRead *.{js,jsx} set filetype=javascript expandtab ts=2 sw=2 ai
+autocmd BufNewFile,BufRead *.{vue} set filetype=vue expandtab ts=2 sw=2 ai
+autocmd BufNewFile,BufRead *.ts set filetype=typescript expandtab ts=2 sw=2 ai
+autocmd BufNewFile,BufRead *.hs set expandtab ts=2 sw=2 ai
+autocmd BufNewFile,BufRead *.go set noexpandtab ts=4 sw=4 ai
 autocmd BufNewFile,BufRead nginx.conf set filetype=nginx
+"autocmd BufNewFile,BufRead *.go nmap <F5> :GoBuild<CR>
+"autocmd BufNewFile,BufRead *.go nmap F :GoIfErr<CR>
 
 "    `------------------------------------`
 "    |    commands and custom extensions  |
 "    `------------------------------------`
+
+function! s:InsertFrozenStringLiteral()
+  execute "normal! i# frozen_string_literal: true"
+endfunction
+autocmd BufNewFile *.{rb} call <SID>InsertFrozenStringLiteral()
+
 
 " InsertGates: when creating a file called name.h automatically add include
 " guard
@@ -311,7 +359,7 @@ function! s:GoToError()
 endfunction
 
 command! -complete=shellcmd -nargs=+ GoToError call s:GoToError()
-autocmd BufNew,BufRead *.{c,cpp,h,cxx,hpp} nnoremap <Return> :GoToError()<CR>
+" autocmd BufNew,BufRead *.{c,cpp,h,cxx,hpp} nnoremap <Return> :GoToError()<CR>
 
 " SwitchHeaderSource: switch between file.cpp and file.h
 function! s:SwitchHeaderSource()
@@ -347,6 +395,7 @@ endfunction
 command! -complete=shellcmd -nargs=+ SwitchHeaderSource call s:SwitchHeaderSource()
 autocmd BufNew,BufRead *.{c,cpp,h,cxx,hpp} nnoremap <F3> :SwitchHeaderSource()<CR>
 
+" Handy maps to make configuring vim easier
 command! EV :e ~/.vimrc
 noremap <F2> :so ~/.vimrc<CR>
 noremap <F4> :nohlsearch<CR>
@@ -354,9 +403,11 @@ noremap <F4> :nohlsearch<CR>
 " When opening a file, cd to that file's directory
 autocmd BufEnter * silent! lcd %:p:h
 
-
-
-
+" +--------------+
+" |              |
+" |   closetag   |
+" |              |
+" +--------------+
 
 " filenames like *.xml, *.html, *.xhtml, ...
 " These are the file extensions where this plugin is enabled.
@@ -399,8 +450,65 @@ let g:closetag_shortcut = '>'
 "
 let g:closetag_close_shortcut = '<leader>>'
 
-" set noesckeys
+" +----------+
+" |          |
+" |   CoC    |
+" |          |
+" +----------+
 
-nnoremap F :GoIfErr<CR>
-nnoremap <F5> :GoBuild<CR>
+"" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+inoremap <silent><expr> <c-space> coc#refresh()
+
+nmap <leader>gs :G<CR>
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Discord presence
+let g:presence_auto_update         = 1
+let g:presence_neovim_image_text   = "i use vim btw"
+let g:presence_main_image          = "neovim"
+let g:presence_client_id           = "793271441293967371"
+let g:presence_log_level           = "error"
+let g:presence_debounce_timeout    = 10
+let g:presence_enable_line_number  = 0
+let g:presence_blacklist           = []
+
+" Rich Presence text options
+let g:presence_editing_text        = "Editing: %s"
+let g:presence_file_explorer_text  = "Browsing %s"
+let g:presence_git_commit_text     = "Committing changes"
+let g:presence_plugin_manager_text = "Managing plugins"
+let g:presence_reading_text        = "Reading %s"
+let g:presence_workspace_text      = "Workspace: %s"
+let g:presence_line_number_text    = "Line %s out of %s"
+
+" ascii.nvim options
+let g:ascii_default_hpadding = 1
+let g:ascii_default_vpadding = 1
+let g:ascii_hline_char = "-"
+let g:ascii_vline_char = "|"
+let g:ascii_corner_char = "+"
+
+vnoremap <F3> :Box<CR>
