@@ -1,0 +1,5 @@
+{
+  "solargraph.checkGemVersion": false,
+  "typescript.suggestionActions.enabled": false,
+  "svelte.enable-ts-plugin": true
+}
