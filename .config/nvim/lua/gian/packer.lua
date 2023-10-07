@@ -9,23 +9,47 @@ return require('packer').startup(function(use)
 
   -- Colorscheme
   use 'EdenEast/nightfox.nvim'
+  use 'gbprod/nord.nvim'
+  use 'sainnhe/gruvbox-material'
+  use 'folke/tokyonight.nvim'
 
-  -- Coc
+  use 'echasnovski/mini.nvim'
+
+  use "lukas-reineke/indent-blankline.nvim"
+
+  use { 'akinsho/git-conflict.nvim', tag = "*", config = function()
+    require('git-conflict').setup()
+  end }
+
   use {
-    'neoclide/coc.nvim', branch = 'release'
+    'VonHeikemen/lsp-zero.nvim',
+    branch = 'v2.x',
+    requires = {
+      -- LSP Support
+      { 'neovim/nvim-lspconfig' },             -- Required
+      { 'williamboman/mason.nvim' },           -- Optional
+      { 'williamboman/mason-lspconfig.nvim' }, -- Optional
+
+      -- Autocompletion
+      { 'hrsh7th/nvim-cmp' },     -- Required
+      { 'hrsh7th/cmp-nvim-lsp' }, -- Required
+      { 'L3MON4D3/LuaSnip' },     -- Required
+    }
   }
+
+  use 'github/copilot.vim'
 
   -- Syntax highlighting
   use {
-      'nvim-treesitter/nvim-treesitter',
-      run = ':TSUpdate'
+    'nvim-treesitter/nvim-treesitter',
+    run = ':TSUpdate'
   }
   use 'windwp/nvim-ts-autotag'
 
   -- Fuzzy finder
   use {
     'nvim-telescope/telescope.nvim', tag = '0.1.0',
-    requires = { {'nvim-lua/plenary.nvim'} }
+    requires = { { 'nvim-lua/plenary.nvim' } }
   }
 
   -- Status line
@@ -43,7 +67,7 @@ return require('packer').startup(function(use)
     requires = {
       'nvim-tree/nvim-web-devicons', -- optional, for file icons
     },
-    tag = 'nightly' -- optional, updated every week. (see issue #1193)
+    tag = 'nightly'                  -- optional, updated every week. (see issue #1193)
   }
 
   -- Colorize CSS colors

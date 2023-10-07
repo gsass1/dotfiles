@@ -18,3 +18,8 @@ vim.keymap.set('v', '<', '<gv', {})
 vim.keymap.set('x', 'p', '"_dP', { noremap = true })
 vim.keymap.set('x', 'P', '"_dP', { noremap = true })
 vim.keymap.set('x', 'd', '"_d', { noremap = true })
+
+vim.keymap.set('n', '<CR>', ':noh<CR><CR>', { noremap = true })
+
+vim.keymap.set('x', '{', ':<C-u>keepjumps normal! gv{<CR>', { noremap = true })
+vim.keymap.set('x', '}', ':<C-u>keepjumps normal! gv}<CR>', { noremap = true })
