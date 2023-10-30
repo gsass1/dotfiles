@@ -75,4 +75,7 @@ return require('packer').startup(function(use)
 
   -- Autocommenting
   use 'tpope/vim-commentary'
+
+
+  use 'andweeb/presence.nvim'
 end)
